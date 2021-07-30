@@ -18,6 +18,7 @@ public class DataBaseClient {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+            connection.setAutoCommit(false);
 
         } catch (SQLException e) {
             System.out.println("Connection Failed");
@@ -106,10 +107,10 @@ public class DataBaseClient {
                 wrapQuotes(beer.getString("type")) + ", " +
                 Integer.toString(beer.getInt("price"))+ ", " +
                 wrapQuotes(beer.getString("flavor")) + ");";
-        ResultSet resultSet = statement.executeQuery(query);
-        connection.commit();
-        resultSet.close();
+        statement.executeUpdate(query);
+
         statement.close();
+        connection.commit();
     }
 
     private static String wrapQuotes(String s) {
