@@ -1,4 +1,4 @@
-package DataStructures;
+package api.Handlers.DataBaseClient.DataStructures;
 
 public class Lager extends Beer {
 

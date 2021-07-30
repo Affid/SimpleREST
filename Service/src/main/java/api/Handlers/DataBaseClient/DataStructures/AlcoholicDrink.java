@@ -1,4 +1,4 @@
-package DataStructures;
+package api.Handlers.DataBaseClient.DataStructures;
 
 public abstract class AlcoholicDrink {
     private Integer price;
