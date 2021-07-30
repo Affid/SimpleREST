@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 
 public class ConnectionTestHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
