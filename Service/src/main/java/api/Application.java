@@ -1,9 +1,7 @@
 package api;
 
-import api.Handlers.BeerHandler;
-import api.Handlers.ConnectionTestHandler;
+import api.Handlers.*;
 import api.Handlers.DataBaseClient.DataBaseClient;
-import api.Handlers.HelloFromDBHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -27,6 +25,8 @@ public class Application {
         app.server.createContext("/api/ping", new ConnectionTestHandler());
         app.server.createContext("/api/db", new HelloFromDBHandler(app.dataBaseClient));
         app.server.createContext("/api/db/beer", new BeerHandler(app.dataBaseClient));
+        app.server.createContext("/api/db/beer/ale", new AleHandler(app.dataBaseClient));
+        app.server.createContext("/api/db/beer/lager", new LagerHandler(app.dataBaseClient));
         app.server.setExecutor(null);
         app.server.start();
     }
