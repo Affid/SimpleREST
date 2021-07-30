@@ -1,9 +1,6 @@
 package api.Handlers.DataBaseClient;
 
-import api.Handlers.DataBaseClient.DataStructures.AlcoholicDrink;
-import api.Handlers.DataBaseClient.DataStructures.Ale;
 import api.Handlers.DataBaseClient.DataStructures.Beer;
-import api.Handlers.DataBaseClient.DataStructures.Lager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,10 +79,7 @@ public class DataBaseClient {
             String type = set.getString("type");
             Integer price = set.getInt("price");
             String flavor = set.getString("flavor");
-            if (type.equals("Ale"))
-                list.add(new Ale(label, price, flavor));
-            else if (type.equals("Lager"))
-                list.add(new Lager(label, price, flavor));
+            list.add(new Beer(label, price, flavor, type));
         }
         return list;
     }

@@ -4,12 +4,22 @@ public class Beer extends AlcoholicDrink {
     private String label;
     private Integer price;
     private String flavor;
+    private String type;
 
 
-    public Beer(String label, Integer price, String flavor) {
+    public Beer(String label, Integer price, String flavor, String type) {
         this.label = label;
         this.price = price;
         this.flavor = flavor;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
