@@ -5,6 +5,8 @@ import api.Handlers.DataBaseClient.DataStructures.Ale;
 import api.Handlers.DataBaseClient.DataStructures.Beer;
 import api.Handlers.DataBaseClient.DataStructures.Lager;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class DataBaseClient {
         return result;
     }
 
-    public ArrayList<Object> getAllBeerObjects() throws RuntimeException, SQLException{
+    public ArrayList<Object> getAllBeerObjects() throws RuntimeException, SQLException {
         if (!isConnected())
             throw new RuntimeException();
 
@@ -74,7 +76,7 @@ public class DataBaseClient {
 
     private static ArrayList<Object> processBeerFromSet(ResultSet set) throws SQLException {
         ArrayList<Object> list = new ArrayList<>();
-        while(set.next()){
+        while (set.next()) {
             String label = set.getString("label");
             String type = set.getString("type");
             Integer price = set.getInt("price");
@@ -87,8 +89,47 @@ public class DataBaseClient {
         return list;
     }
 
-    private String wrapQuotes(String s) {
+    public void putBeerToDatabase(String json) throws SQLException {
+        JSONArray array = new JSONArray(json);
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            if (validateBeer(object))
+                recordBeer(object);
+        }
+    }
+
+    private void recordBeer(JSONObject beer) throws SQLException {
+        Statement statement = connection.createStatement();
+        String query = "INSERT INTO beer (label, type, price, flavor) " +
+                "VALUES (" +
+                wrapQuotes(beer.getString("label")) + ", " +
+                wrapQuotes(beer.getString("type")) + ", " +
+                Integer.toString(beer.getInt("price"))+ ", " +
+                wrapQuotes(beer.getString("flavor")) + ");";
+        ResultSet resultSet = statement.executeQuery(query);
+        connection.commit();
+        resultSet.close();
+        statement.close();
+    }
+
+    private static String wrapQuotes(String s) {
         return "'" + s + "'";
+    }
+
+    private static boolean validateBeer(JSONObject object) {
+        try {
+            if (!(object.getString("type").equals("Ale") || object.getString("type").equals("Lager")))
+                return false;
+            if (object.getInt("price") <= 0)
+                return false;
+            if (object.getString("label").equals(""))
+                return false;
+            if (object.getString("flavor").equals(""))
+                return false;
+        } catch (JSONException e) {
+            return false;
+        }
+        return true;
     }
 
 }
