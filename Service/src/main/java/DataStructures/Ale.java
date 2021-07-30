@@ -6,10 +6,4 @@ public class Ale extends Beer {
         super(label, price, flavor);
     }
 
-    @Override
-    public String toString() {
-        return String.format("Ale named %s, costs %o, and has flavor %s", getLabel(), getPrice(), getFlavor());
-    }
-
-
 }

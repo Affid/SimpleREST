@@ -8,4 +8,7 @@ public abstract class AlcoholicDrink {
 
     abstract Integer getPrice();
 
+    abstract void setFlavor(String flavor);
+
+    public abstract void setPrice(Integer price);
 }

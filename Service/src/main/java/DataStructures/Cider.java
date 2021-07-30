@@ -4,14 +4,14 @@ public class Cider extends AlcoholicDrink {
     private String label;
     private Integer price;
     private String flavor;
-    private String ingridient;
+    private String ingredient;
 
 
     public Cider(String label, Integer price, String flavor, String ingridient) {
         this.label = label;
         this.price = price;
         this.flavor = flavor;
-        this.ingridient = ingridient;
+        this.ingredient = ingridient;
     }
 
     public void setPrice(Integer price) {
@@ -21,6 +21,19 @@ public class Cider extends AlcoholicDrink {
     @Override
     public String getFlavor() {
         return flavor;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    @Override
+    public void setFlavor(String flavor) {
+        this.flavor = flavor;
+    }
+
+    public void setIngredient(String ingredient) {
+        this.ingredient = ingredient;
     }
 
     @Override
@@ -49,6 +62,6 @@ public class Cider extends AlcoholicDrink {
 
     @Override
     public String toString() {
-        return String.format("Cider named %s, made from %s, costs %o, and has flavor %s", label, ingridient, price, flavor);
+        return String.format("Cider named %s, made from %s, costs %o, and has flavor %s", label, ingredient, price, flavor);
     }
 }

@@ -12,8 +12,9 @@ public class Beer extends AlcoholicDrink {
         this.flavor = flavor;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    @Override
+    public Integer getPrice() {
+        return this.price;
     }
 
     @Override
@@ -22,12 +23,21 @@ public class Beer extends AlcoholicDrink {
     }
 
     @Override
-    public Integer getPrice() {
-        return this.price;
+    public void setFlavor(String flavor) {
+        this.flavor = flavor;
+    }
+
+    @Override
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     public String getLabel() {
         return this.label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Override
@@ -47,6 +57,8 @@ public class Beer extends AlcoholicDrink {
 
     @Override
     public String toString() {
-        return String.format("Generic beer named %s, costs %o, and has flavor %s", label, price, flavor);
+        return String.format("%s named %s, costs %o, and has flavor %s",this.getClass().getName(), getLabel(), getPrice(), getFlavor());
     }
+
+
 }
