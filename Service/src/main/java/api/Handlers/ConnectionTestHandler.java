@@ -15,8 +15,7 @@ public class ConnectionTestHandler implements HttpHandler {
             OutputStream output = exchange.getResponseBody();
             output.write(response.getBytes());
             output.flush();
-        }
-        else {
+        } else {
             exchange.sendResponseHeaders(405, -1);// 405 Method Not Allowed
         }
         exchange.close();

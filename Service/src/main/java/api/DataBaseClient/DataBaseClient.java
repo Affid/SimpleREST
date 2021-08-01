@@ -1,6 +1,6 @@
-package api.Handlers.DataBaseClient;
+package api.DataBaseClient;
 
-import api.Handlers.DataBaseClient.DataStructures.Beer;
+import api.DataBaseClient.DataStructures.Beer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

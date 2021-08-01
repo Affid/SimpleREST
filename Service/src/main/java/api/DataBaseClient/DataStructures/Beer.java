@@ -1,4 +1,4 @@
-package api.Handlers.DataBaseClient.DataStructures;
+package api.DataBaseClient.DataStructures;
 
 public class Beer extends AlcoholicDrink {
     private String label;

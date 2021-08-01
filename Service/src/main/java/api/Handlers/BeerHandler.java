@@ -1,6 +1,7 @@
 package api.Handlers;
 
-import api.Handlers.DataBaseClient.DataBaseClient;
+import api.DataBaseClient.DataBaseClient;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -15,23 +16,23 @@ public class BeerHandler implements HttpHandler {
     public BeerHandler(DataBaseClient dataBaseClient) {
         this.dataBaseClient = dataBaseClient;
     }
+
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
+        Headers headers = exchange.getRequestHeaders();
         if (method.equals("GET")) {
-            if(!dataBaseClient.isConnected()){
+            if (!dataBaseClient.isConnected()) {
                 exchange.sendResponseHeaders(500, -1);
                 return;
             }
             String response;
             try {
                 response = dataBaseClient.getAllBeer();
-            }
-            catch (RuntimeException e) {
+            } catch (RuntimeException e) {
                 e.printStackTrace();
                 exchange.sendResponseHeaders(500, -1);
                 return;
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
                 exchange.sendResponseHeaders(400, -1);
                 return;
@@ -41,43 +42,43 @@ public class BeerHandler implements HttpHandler {
             output.write(response.getBytes());
             output.flush();
             return;
-        }
-        else if (method.equals("POST")) {
-            if(!dataBaseClient.isConnected()){
-                exchange.sendResponseHeaders(500, -1);
-                return;
-            }
-            try {
-                InputStream stream = exchange.getRequestBody();
-                StringBuilder sb = new StringBuilder();
-                for (int ch; (ch = stream.read()) != -1; )
-                    sb.append((char) ch);
+        } else if (method.equals("POST")) {
+            if (headers.get("Content-type").contains("application/json")) {
+                if (!dataBaseClient.isConnected()) {
+                    exchange.sendResponseHeaders(500, -1);
+                    return;
+                }
+                try {
+                    InputStream stream = exchange.getRequestBody();
+                    StringBuilder sb = new StringBuilder();
+                    for (int ch; (ch = stream.read()) != -1; )
+                        sb.append((char) ch);
 
-                stream.close();
-                String result = validateJSONArray(sb.toString());
+                    stream.close();
+                    String result = validateJSONArray(sb.toString());
 
-                dataBaseClient.putBeerToDatabase(result);
+                    dataBaseClient.putBeerToDatabase(result);
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                    exchange.sendResponseHeaders(500, -1);
+                    return;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    exchange.sendResponseHeaders(400, -1);
+                    return;
+                }
+                exchange.sendResponseHeaders(201, -1);
+            } else {
+                exchange.sendResponseHeaders(500, -1); // Something over than json
             }
-            catch (RuntimeException e) {
-                e.printStackTrace();
-                exchange.sendResponseHeaders(500, -1);
-                return;
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-                exchange.sendResponseHeaders(400, -1);
-                return;
-            }
-            exchange.sendResponseHeaders(201, -1);
-        }
-        else {
+        } else {
             exchange.sendResponseHeaders(405, -1);// 405 Method Not Allowed
         }
         exchange.close();
     }
 
     private String validateJSONArray(String s) {
-        if(s.startsWith("["))
+        if (s.startsWith("["))
             return s;
         else
             return '[' + s + ']';

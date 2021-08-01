@@ -1,7 +1,7 @@
 package api;
 
 import api.Handlers.*;
-import api.Handlers.DataBaseClient.DataBaseClient;
+import api.DataBaseClient.DataBaseClient;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
